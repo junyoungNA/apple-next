@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { connectDB } from "../util/database";
+import DetailLink from "./DetailLink";
 
 export default async function List() {
   interface IPost {
@@ -13,10 +15,14 @@ export default async function List() {
     return (
       <div className="list-bg">
         {result?.map((post : IPost) => 
-          <div className="list-item"  key={post._id.toString()}>
+        // <Link href={`/detail/${post._id}`} key={post._id.toString()}>
+          <div  className="list-item"  >
             <h4>{post.title}</h4>
             <p>{post.content}</p>
+            <DetailLink/>
           </div>
+        // </Link>
+        
       )}
     </div>
     )
