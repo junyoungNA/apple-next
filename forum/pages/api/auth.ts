@@ -12,11 +12,9 @@ const auth: Auth = async (req, res) => {
     // MongoDB 클라이언트 연결
     if (req.method === "GET") {
       const db = (await connectDB).db("forum");
-      console.log(req.body);
       const result = await db
         .collection("user")
         .findOne({ userId: req.body.userId });
-      console.log(result);
       return res.status(200).json({ date: new Date(), result });
     }
     if (req.method === "POST") {

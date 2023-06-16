@@ -19,17 +19,16 @@ export default async function List() {
   //useSearchParams 로 쿼리스트링 확인
   return (
     <div className="list-bg">
-      {result?.map(
-        (post: IPost) => (
-          // <Link href={`/detail/${post._id}`} key={post._id.toString()}>
-          <div className="list-item">
+      {result?.map((post: IPost) => (
+        <div className="list-item">
+          <Link href={`/detail/${post._id}`} key={post._id.toString()}>
             <h4>{post.title}</h4>
             <p>{post.content}</p>
-            <DetailLink />
-          </div>
-        )
-        // </Link>
-      )}
+            {/* <DetailLink /> */}
+          </Link>
+          <Link href={"/edit/" + post._id}>수정</Link>
+        </div>
+      ))}
     </div>
   );
 }
