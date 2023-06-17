@@ -14,13 +14,14 @@ const Edit: Edit = async (req, res) => {
     }
     // MongoDB 클라이언트 연결
     if (req.method === "POST") {
+      console.log(req.body);
       if (req.body.title.trim() === "" || req.body.content.trim() === "") {
         return res.status(500).json("공백은 입력할 수 없습니다.");
       }
       const db = (await connectDB).db("forum");
       await db
         .collection("post")
-        .updateOne({ _id: req.body.id }, { $set: req.body });
+        .updateOne({ _id: new ObjectId(req.body.id) }, { $set: req.body });
       console.log("Success");
       return res.redirect(302, "/list");
     }

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { connectDB } from "../util/database";
 import DetailLink from "./DetailLink";
+import { findPostList } from "../util/mongo";
 
 interface IPost {
   _id: object;
@@ -9,9 +10,7 @@ interface IPost {
 }
 
 export default async function List() {
-  const db = (await connectDB).db("forum");
-  const result = await db.collection("post").find().toArray();
-
+  const result: IPost[] = await findPostList();
   //Link태그에 prefetch기능 내장 되어있음
   //prefetch기능은 이동할 route경로에 파일을 미리 로드해주는 기능
   //태그 인라인에 prefetch ={false}로 기능을 끌 수 있음

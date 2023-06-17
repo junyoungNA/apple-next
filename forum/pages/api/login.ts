@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { connectDB } from "../../app/util/database";
+import { findOne } from "@/app/util/mongo";
 
 type Login = (req: Request, res: Response) => any;
 type User = {
@@ -23,10 +24,11 @@ const login: Login = async (req, res) => {
       if (req.body.userId.trim() === "" || req.body.password.trim() === "") {
         return res.status(500).json("공백은 입력할 수 없습니다.");
       }
-      const db = (await connectDB).db("forum");
-      const result = await db
-        .collection("user")
-        .findOne({ userId: req.body.userId });
+      const result = await findOne(req.body.userId);
+      // const db = (await connectDB).db("forum");
+      // const result = await db
+      //   .collection("user")
+      //   .findOne({ userId: req.body.userId });
       console.log(result);
     }
   } catch (error) {

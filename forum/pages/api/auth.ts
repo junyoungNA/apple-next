@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { connectDB } from "../../app/util/database";
+import { findOne } from "@/app/util/mongo";
 
 type Auth = (req: Request, res: Response) => any;
 type User = {
@@ -11,10 +12,7 @@ const auth: Auth = async (req, res) => {
   try {
     // MongoDB 클라이언트 연결
     if (req.method === "GET") {
-      const db = (await connectDB).db("forum");
-      const result = await db
-        .collection("user")
-        .findOne({ userId: req.body.userId });
+      const result = await findOne(req.body.userId);
       return res.status(200).json({ date: new Date(), result });
     }
     if (req.method === "POST") {

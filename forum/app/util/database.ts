@@ -1,11 +1,11 @@
-import { MongoClient } from "mongodb";
+import { MongoClient, MongoClientOptions } from "mongodb";
 const url =
   "mongodb+srv://zoon:qwer1234@cluster0.chpelc8.mongodb.net/?retryWrites=true&w=majority";
-const options: any = { useNewUrlParser: true };
-let connectDB: any;
+const options: MongoClientOptions = {};
+let connectDB: Promise<MongoClient>;
 
 declare global {
-  var _mongo: any;
+  var _mongo: Promise<MongoClient>;
 }
 
 if (process.env.NODE_ENV === "development") {

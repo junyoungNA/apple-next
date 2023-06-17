@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { findOne, IResult } from "@/app/util/mongo";
+import { findOne, IFindPost } from "@/app/util/mongo";
 
 type Params = {
   id: string;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Edit: NextPage<Props> = async ({ params }) => {
-  const result: IResult | null = await findOne(params);
+  const result: IFindPost = await findOne(params);
   return (
     <div>
       <h4>글 수정</h4>
@@ -19,15 +19,21 @@ const Edit: NextPage<Props> = async ({ params }) => {
         <input
           className="write-title"
           name="title"
-          defaultValue={result.title}
+          defaultValue={result?.title}
         />
         <label>내용</label>
         <textarea
           className="write-content"
           maxLength={50}
           name="content"
-          defaultValue={result.content}
+          defaultValue={result?.content}
         ></textarea>
+        <input
+          type="text"
+          style={{ display: "none" }}
+          defaultValue={params.id}
+          name="id"
+        />
         <button type="submit" className="write-submit">
           버튼
         </button>
