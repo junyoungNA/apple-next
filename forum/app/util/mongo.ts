@@ -1,5 +1,5 @@
 import { connectDB } from "../util/database";
-import { ObjectId } from "mongodb";
+import { ObjectId, WithId } from "mongodb";
 
 type Params = {
   id: string;
@@ -14,26 +14,33 @@ export interface IFindPost extends IResult {
   title: string;
   content: string;
 }
-
 export interface IFindUser extends IResult {
   userId: string;
   password: string;
 }
 
-type FindOne = (params: Params) => Promise<IFindPost | IFindUser | null>;
+export type FindOne = (params: Params) => Promise<IFindPost | IFindUser | null>;
 
-export type findOneReslt = IFindPost | IFindUser | null;
+export type findOneReslt = WithId<IFindPost> | WithId<IFindUser> | null;
 
 export const findOne: FindOne = async params => {
-  console.log("유저아이디", params.userId);
   const db = (await connectDB)?.db("forum");
-  const result: any = await db;
-  // ?.collection("post")
-  // .findOne({ _id: new ObjectId(params.id) });
+  const result: findOneReslt = await db
+    ?.collection(params.userId ? "user" : "post")
+    .findOne<findOneReslt>(
+      params.userId
+        ? { userId: params.userId }
+        : {
+            _id: new ObjectId(params.id),
+          }
+    );
   return result;
 };
 
-export const findPostList = async () => {
+export const findList = async (
+  collection: string
+): Promise<IFindPost[] | IFindUser[]> => {
   const db = (await connectDB)?.db("forum");
-  return await db?.collection("post").find().toArray();
+  const result = await db?.collection(collection).find().toArray();
+  return result as IFindPost[] | IFindUser[];
 };

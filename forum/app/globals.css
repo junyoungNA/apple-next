@@ -19,6 +19,8 @@ a {
   margin-bottom: 5px;
   box-shadow: rgb(224, 224, 224) 0px 2px 4px 0px;
   text-decoration: none;
+  opacity: 1;
+  transition: all 1s ease-in-out;
 }
 
 .list-item h4 {
