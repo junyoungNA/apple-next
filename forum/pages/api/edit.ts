@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { connectDB } from "../../app/util/database";
 import { ObjectId } from "mongodb";
+import { editPost } from "@/app/util/mongo";
 
 type Edit = (req: Request, res: Response) => any;
 
@@ -18,10 +19,7 @@ const Edit: Edit = async (req, res) => {
       if (req.body.title.trim() === "" || req.body.content.trim() === "") {
         return res.status(500).json("공백은 입력할 수 없습니다.");
       }
-      const db = (await connectDB).db("forum");
-      await db
-        .collection("post")
-        .updateOne({ _id: new ObjectId(req.body.id) }, { $set: req.body });
+      await editPost({_id:new ObjectId(req.body.id)}, req.body)
       console.log("Success");
       return res.redirect(302, "/list");
     }

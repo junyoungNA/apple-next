@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { findOne, IFindPost } from "@/app/util/mongo";
+import { findOne, IPost } from "@/app/util/mongo";
 
 type Params = {
   id: string;
@@ -10,7 +10,7 @@ type Props = {
 };
 
 const Edit: NextPage<Props> = async ({ params }) => {
-  const result: IFindPost = await findOne(params);
+  const result: any = await findOne(params);
   return (
     <div>
       <h4>글 수정</h4>

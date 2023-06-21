@@ -1,6 +1,4 @@
-import { Request, Response } from "express";
-import { connectDB } from "../../app/util/database";
-import { findOne, findList, IFindUser } from "@/app/util/mongo";
+import { findOne, findUserList, insertUser } from "@/app/util/mongo";
 import { ReqRes } from "./test";
 
 const auth: ReqRes = async (req, res) => {
@@ -14,8 +12,7 @@ const auth: ReqRes = async (req, res) => {
       if (req.body.userId.trim() === "" || req.body.password.trim() === "") {
         return res.status(500).json("공백은 입력할 수 없습니다.");
       }
-      const result = await findList("user");
-      console.log(result, "qweqw");
+      const result = await findUserList();
       const find = result.findIndex(item => {
         if ("userId" in item) {
           return req.body.userId === item.userId;
@@ -23,11 +20,11 @@ const auth: ReqRes = async (req, res) => {
         return false;
       });
 
-      // if (find !== -1) {
-      //   console.log("이미 가입된 아이디입니다.");
-      //   return res.redirect(302, "/auth");
-      // }
-      // db.collection("user").insertOne(req.body);
+      if (find !== -1) {
+        console.log("이미 가입된 아이디입니다.");
+        return res.redirect(302, "/auth");
+      }
+      await insertUser(req.body);
       return res.redirect(302, "/");
     }
   } catch (error) {

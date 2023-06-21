@@ -1,5 +1,3 @@
-import { ObjectId } from "mongodb";
-import { connectDB } from "../util/database";
 import { NextPage } from "next";
 
 const Auth: NextPage = async () => {

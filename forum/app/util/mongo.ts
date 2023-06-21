@@ -10,18 +10,18 @@ interface IResult {
   _id: ObjectId;
 }
 
-export interface IFindPost extends IResult {
+export interface IPost extends IResult {
   title: string;
   content: string;
 }
-export interface IFindUser extends IResult {
+export interface IUser extends IResult {
   userId: string;
   password: string;
 }
 
-export type FindOne = (params: Params) => Promise<IFindPost | IFindUser | null>;
+export type FindOne = (params: Params) => Promise<IPost | IUser | null>;
 
-export type findOneReslt = WithId<IFindPost> | WithId<IFindUser> | null;
+export type findOneReslt = WithId<IPost> | WithId<IUser> | null;
 
 export const findOne: FindOne = async params => {
   const db = (await connectDB)?.db("forum");
@@ -37,10 +37,46 @@ export const findOne: FindOne = async params => {
   return result;
 };
 
-export const findList = async (
-  collection: string
-): Promise<IFindPost[] | IFindUser[]> => {
+export const findPostList = async (
+): Promise<IPost[]> => {
   const db = (await connectDB)?.db("forum");
-  const result = await db?.collection(collection).find().toArray();
-  return result as IFindPost[] | IFindUser[];
+  const result = await db?.collection('post').find().toArray();
+  return result as IPost[];
 };
+
+export const insertUser = async(user:IUser) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('user').insertOne(user);
+  return result;
+} 
+
+export const inserPost = async(post:IPost) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('post').insertOne(post);
+  return result;
+} 
+
+export const deletePost = async(postId:IResult) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('post').deleteOne(postId);
+  return result;
+} 
+
+export const editPost = async(postId:IResult, newPost: IPost) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('post').updateOne(postId,{ $set:newPost});
+  return result;
+} 
+
+
+
+
+export const findUserList = async (
+  ): Promise<IUser[]> => {
+    const db = (await connectDB)?.db("forum");
+    const result = await db?.collection('user').find().toArray();
+    return result as IUser[];
+  };
+  
+
+

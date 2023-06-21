@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { IFindPost } from "../util/mongo";
+import { IPost } from "../util/mongo";
 import { NextPage } from "next";
 
 interface ListItemProps {
-  result: IFindPost[] | null;
+  result: IPost[] | null;
 }
 
 const ListItem: NextPage<ListItemProps> = ({ result }) => {
