@@ -19,7 +19,7 @@ const auth: ReqRes = async (req, res) => {
         }
         return false;
       });
-
+ 
       if (find !== -1) {
         console.log("이미 가입된 아이디입니다.");
         return res.redirect(302, "/auth");

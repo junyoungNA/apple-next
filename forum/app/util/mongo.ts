@@ -13,6 +13,7 @@ interface IResult {
 export interface IPost extends IResult {
   title: string;
   content: string;
+  userEmail:string;
 }
 export interface IUser extends IResult {
   userId: string;
@@ -50,7 +51,7 @@ export const insertUser = async(user:IUser) => {
   return result;
 } 
 
-export const inserPost = async(post:IPost) => {
+export const inserPost = async(post:IPost,) => {
   const db = (await connectDB)?.db("forum");
   const result = await db?.collection('post').insertOne(post);
   return result;
@@ -67,9 +68,6 @@ export const editPost = async(postId:IResult, newPost: IPost) => {
   const result = await db?.collection('post').updateOne(postId,{ $set:newPost});
   return result;
 } 
-
-
-
 
 export const findUserList = async (
   ): Promise<IUser[]> => {

@@ -11,6 +11,7 @@ type Props = {
 
 const Edit: NextPage<Props> = async ({ params }) => {
   const result: any = await findOne(params);
+  console.log(result);
   return (
     <div>
       <h4>글 수정</h4>
@@ -34,6 +35,13 @@ const Edit: NextPage<Props> = async ({ params }) => {
           defaultValue={params.id}
           name="id"
         />
+          <input
+          type="text"
+          style={{ display: "none" }}
+          defaultValue={result.userEmail}
+          name="userEmail"
+        />
+        
         <button type="submit" className="write-submit">
           버튼
         </button>

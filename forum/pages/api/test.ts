@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { connectDB } from "../../app/util/database";
 import { deletePost, findPostList, inserPost } from "@/app/util/mongo";
 import { ObjectId } from "mongodb";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 
 export type ReqRes = (req: Request, res: Response) => any;
 
@@ -16,6 +18,9 @@ const test: ReqRes = async (req, res) => {
       if (req.body.title.trim() === "" || req.body.content.trim() === "") {
         return res.status(500).json("공백은 입력할 수 없습니다.");
       }
+      const session = await getServerSession(req,res,authOptions);
+      if(!session) return;
+      req.body.userEmail = session?.user?.email;
       await inserPost(req.body);
       console.log("Success");
       return res.redirect(302, "/list");
