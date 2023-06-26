@@ -18,7 +18,6 @@ const Edit: Edit = async (req, res) => {
     // MongoDB 클라이언트 연결
     if (req.method === "POST") {
       const session = await getServerSession(req,res,authOptions);
-      console.log(req.body);
       if(!session) {
         console.log('로그인되지 않았습니다');
         return;

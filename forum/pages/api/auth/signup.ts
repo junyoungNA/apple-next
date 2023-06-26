@@ -19,7 +19,6 @@ const signupHandler : ReqRes  = async(req, res) => {
             return res.redirect(302, "/auth");
         }
         const hash = await bcrypt.hash(req.body.password,10);
-        console.log(hash,'hash');
         req.body.password = hash;
         await insertUser(req.body);
         res.status(200).json('가입성공');

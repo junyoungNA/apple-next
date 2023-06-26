@@ -77,4 +77,15 @@ export const findUserList = async (
   };
   
 
+export const getComment = async(id : string) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('comment').find({parent : id}).toArray();
+  return result;
+}
+
+export const insertComment = async(comment : any) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('comment').insertOne(comment);
+  return result;
+}
 
