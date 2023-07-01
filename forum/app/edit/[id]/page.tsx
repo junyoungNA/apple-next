@@ -11,7 +11,6 @@ type Props = {
 
 const Edit: NextPage<Props> = async ({ params }) => {
   const result: any = await findOne(params);
-  console.log(result);
   return (
     <div>
       <h4>글 수정</h4>

@@ -27,7 +27,7 @@ const test: ReqRes = async (req, res) => {
     }
     if (req.method === "DELETE") {
       const { id } = req.query;
-      await deletePost({_id: new ObjectId(id?.toString())});
+      await deletePost({_id: new ObjectId(String(id))});
       return res.status(200).json("삭제완료");
     }
   } catch (error) {

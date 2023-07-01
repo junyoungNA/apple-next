@@ -7,7 +7,7 @@ type Params = {
 };
 
 interface IResult {
-  _id: ObjectId;
+  _id?: ObjectId;
 }
 
 export interface IPost extends IResult {
@@ -18,6 +18,12 @@ export interface IPost extends IResult {
 export interface IUser extends IResult {
   userId: string;
   password: string;
+}
+
+export interface IComment extends IResult {
+  comment : string;
+  email : string;
+  parent : string;
 }
 
 export type FindOne = (params: Params) => Promise<IPost | IUser | null>;
@@ -83,9 +89,27 @@ export const getComment = async(id : string) => {
   return result;
 }
 
-export const insertComment = async(comment : any) => {
+export const findComment = async(id : IResult) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('comment').findOne({parent : id});
+  return result;
+}
+
+export const insertComment = async(comment : IComment) => {
   const db = (await connectDB)?.db("forum");
   const result = await db?.collection('comment').insertOne(comment);
   return result;
 }
 
+export const editComment = async(commentId:IResult, newComment: IComment) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('comment').updateOne(commentId,{ $set:newComment});
+  return result;
+} 
+
+
+export const deleteComment = async(commentId:IResult) => {
+  const db = (await connectDB)?.db("forum");
+  const result = await db?.collection('comment').deleteOne(commentId);
+  return result;
+} 
